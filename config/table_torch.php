@@ -30,8 +30,8 @@ $config[ 'humanize_fields' ] = TRUE;
 add extra links here to appear in the nav, they will appear after the tables
 */
 $config[ 'table_extra_nav_links' ] = array( 
-												'welcome/index'=>'Welcome',
-												'user/logout'=>'Log Out'
+												//'welcome/index'=>'Welcome',
+												//'user/logout'=>'Log Out'
  											);
 /*
 preferences for the table display on the listing pages,
@@ -62,9 +62,9 @@ you can specify if the rows can be edited, deleted, and added.
 also you can disabled certain fields, disabled fields will show up as disabled on the edit / add forms
 */		
 $config['torch_tables'] = array( 
-									'accounts'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>true ),
+									'accounts'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>TRUE ),
 									'users'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>FALSE, 'disabled'=>'created_at,last_logged,salt,crypted_password'  ),
-									'templates'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>true ),
+									'templates'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>TRUE ),
 									'media_items'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>FALSE ),
 									
  									);

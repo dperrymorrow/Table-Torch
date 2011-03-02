@@ -9,7 +9,7 @@ class Table_torch {
 	public $settings = array();
 	public $load_prefix = '';
 	public $CI;
-	public $version = '1.0';
+	public $version = '1.0.1/';
 	
 	public $url_vals = array( 'search_field'=>'', 'keyword'=>'', 'sort_field'=>'', 'sort_dir'=>'' );
 
@@ -17,12 +17,13 @@ class Table_torch {
 	function __construct() {
 		
 		$this->CI = &get_instance();
+	
 		
 		define( 'CUR_CONTROLLER', $this->CI->router->fetch_class() );
 		define( 'CUR_METHOD', $this->CI->router->fetch_method() );
 		
 		$this->CI->load->library( array( 'table', 'pagination', 'security' ));
-		$this->load_prefix = 'sparks/table-torch/'.$this->version.'/';
+		$this->load_prefix = 'sparks/table_torch/'.$this->version;
 
 		$this->org_path = $this->CI->load->_ci_view_path;
 		$this->CI->load->database();

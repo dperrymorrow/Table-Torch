@@ -1,4 +1,4 @@
-# Table Torch Scaffolding Spark version 1.0
+# Table Torch Scaffolding Spark
 
 Table Torch is a custom scaffolding system that can be used for common administration tasks of tables in your CodeIgniter Application. Table Torch is different from the traditional scaffold you are used to in the fact that its customizable, and is quite extensible.
 
@@ -20,7 +20,7 @@ In sparks/table-torch/config/table_torch.php you will find the preferences for r
     function __construct(){
 		parent::__construct();
 		// you would obviously need to do your authorization prior to letting the world see your Table Torch
-		$this->load->spark( 'table-torch/1.0');
+		$this->load->spark( 'table-torch/[version #]');
 	}
 
 	function index(){

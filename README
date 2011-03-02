@@ -1,0 +1,72 @@
+WELCOME TO TABLE TORCH
+
+/// example usage
+
+
+
+
+class Example extends CI_Controller {
+
+	function __construct(){
+		parent::__construct();
+		// !!!you would obviously need to do your authorization prior to letting the world see your Table Torch
+		$this->load->spark( 'table-torch/1.0');
+	}
+
+	function torch(){
+		// you can do this in any method you like does not have to be the index
+		$this->table_torch->route();
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////// OVERRIDE EXAMPLE, YOU CAN OVERRIDE listing,add,edit methods /////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	function users_edit( $data ){
+
+		/*
+		replace "users" with the table you want to override
+		this example is "edit", but you could do listing, add, or edit for each table
+		you are passed all the data that was fetched for this page
+		print_r( $data ); // to see what is passed to your file
+
+		you can load a view out of table torch by using TRUE
+		$this->table_torch->load_view( 'form', $data, TRUE );
+		or load it out of your regular views dir by using FALSE
+		either way it will use the template files specified in the sparks/.../config/table_torch
+		*/
+		$this->table_torch->load_view( 'user/edit', $data, FALSE );
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////// THESE ARE THE CALLBACKS AVAILIBLE TO YOU FROM TABLE TORCH ///////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	function before_delete( $table, $primary_key ){
+		// do what you need to before deleting the row here, you are given the table and primary key being deleted...
+	}
+	
+	function before_insert( $table, $data ){
+		/*
+		do what you need to do before inserting
+		You must return the data that will be inserted
+		*/
+		return $data;
+	}
+	
+	function before_update( $table, $data ){
+		/*
+		do what you need to before updating a row
+		you must return the data from this method
+		*/
+		return $data;
+	}
+	
+	function after_insert( $table, $data ){
+		// do what you need to do before inserting
+	}
+	
+	function after_update( $table, $data ){
+		// do what you need to before updating a row
+	}
+}

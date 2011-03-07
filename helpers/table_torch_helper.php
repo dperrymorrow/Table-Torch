@@ -35,7 +35,7 @@ function torch_url( $params, $prepend_base=TRUE ){
 		}
 	}
 	
-	if( empty($base) ){
+	if( substr_count( $base, '/' ) != 2 ){
 		$base = $CI->router->fetch_class() . '/' . $CI->router->fetch_method() .'/';
 	}
 	

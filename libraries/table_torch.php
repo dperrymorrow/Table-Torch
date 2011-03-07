@@ -9,7 +9,7 @@ class Table_torch {
 	public $settings = array();
 	public $load_prefix = '';
 	public $CI;
-	public $version = '1.0.4/';
+	public $version = '1.0.5/';
 	
 	public $url_vals = array( 	'search_field'=>'', 
 								'keyword'=>'', 

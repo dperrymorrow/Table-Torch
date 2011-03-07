@@ -7,7 +7,7 @@ function table_torch_form( $desc, $row=null ){
 	if( isset( $_SERVER['HTTP_REFERER'] )){
 		$str .= form_hidden( 'refer', $_SERVER['HTTP_REFERER'] );
 	}else{
-		$str .= form_hidden( 'refer', CUR_CONTROLLER . '/' . CUR_METHOD . '/listing/'. $table );
+		$str .= form_hidden( 'refer', torch_url( array( 'action'=>'listing', 'table'=>TORCH_TABLE ) ) );
 	}
 
 	if( isset( $row[ PRIMARY_KEY ] )){
@@ -41,9 +41,9 @@ function table_torch_form_open(){
 	$str = '';
 	
 	if( TORCH_METHOD == 'add' ){
-		$str .= form_open( CUR_CONTROLLER . '/' . CUR_METHOD ."/insert/" . TORCH_TABLE );
+		$str .= form_open( torch_url( array( 'action'=>'insert', 'table'=>TORCH_TABLE ), FALSE ) );
 	}else{
-		$str .= form_open( CUR_CONTROLLER . '/'. CUR_METHOD . "/update/" . TORCH_TABLE );
+		$str .= form_open( torch_url( array( 'action'=>'update', 'table'=>TORCH_TABLE ), FALSE ) );
 	}
 	
 	$str .= "\n<div class=\"formContainer\">\n";

@@ -9,18 +9,21 @@ class Table_torch {
 	public $settings = array();
 	public $load_prefix = '';
 	public $CI;
-	public $version = '1.0.2/';
+	public $version = '1.0.3/';
 	
-	public $url_vals = array( 'search_field'=>'', 'keyword'=>'', 'sort_field'=>'', 'sort_dir'=>'' );
+	public $url_vals = array( 	'search_field'=>'', 
+								'keyword'=>'', 
+								'sort_field'=>'', 
+								'sort_dir'=>'', 
+								'table'=>'', 
+								'action'=>'', 
+								'key'=>'' );
 
 	//php 5 constructor
 	function __construct() {
 		
 		$this->CI = &get_instance();
-	
-		
-		define( 'CUR_CONTROLLER', $this->CI->router->fetch_class() );
-		define( 'CUR_METHOD', $this->CI->router->fetch_method() );
+		define( 'PARAM_DILEM', $this->dilem );
 		
 		$this->CI->load->library( array( 'table', 'pagination', 'security' ));
 		$this->load_prefix = 'sparks/table_torch/'.$this->version;
@@ -36,31 +39,33 @@ class Table_torch {
 	function route(){
 
 		$this->_disect_url();
-
-		$method = $this->CI->uri->segment( 3 );
-		$table = $this->CI->uri->segment( 4 );
-		$key = $this->CI->uri->segment( 5 );
 		$redirect = FALSE;
 
-		if( empty( $table )){
+	//	trace($this->url_vals, true );
+
+		if( empty( $this->url_vals[ 'table' ] )){
 
 			$tables = $this->CI->config->item( 'torch_tables' );
-			$table = key( $tables );
+			$this->url_vals[ 'table' ] = key( $tables );
 
-			$method = 'listing';
+			$this->url_vals[ 'action' ] = 'listing';
 			$redirect = TRUE;
 		}
+		
 
-		define( 'TORCH_METHOD', $method );
-		define( 'TORCH_TABLE', $table );
-		define( 'TORCH_KEY', $key );
+		define( 'TORCH_METHOD', $this->url_vals[ 'action' ] );
+		define( 'TORCH_TABLE', $this->url_vals[ 'table' ] );
+		define( 'TORCH_KEY', $this->url_vals[ 'key' ] );
 		
 		$this->_check_table();
 		$this->CI->table_torch_model->define_primary_key();
 
 		if( $redirect ){
-			redirect( CUR_CONTROLLER."/".CUR_METHOD."/".TORCH_METHOD ."/".TORCH_TABLE );
+		//	trace( torch_url( $this->url_vals, FALSE ), true );
+			
+			redirect( torch_url( $this->url_vals, FALSE ));
 		}else{
+			$method = TORCH_METHOD;
 			$this->$method();
 		}
 	}
@@ -69,7 +74,7 @@ class Table_torch {
 	function listing(){
 
 		$config = $this->CI->config->item( 'pagination_settings' );
-		$config['base_url'] = $this->_concat_url();
+		$config['base_url'] = torch_url( $this->url_vals );
 		$config['total_rows'] = $this->CI->table_torch_model->get_count( $this->url_vals ); 
 		$config['uri_segment' ] = $this->CI->uri->total_segments();
 
@@ -144,19 +149,19 @@ class Table_torch {
 		$data = $this->CI->table_torch_model->prep_data();
 		
 		if( method_exists( $this->CI, 'before_insert' ) ){
-			$data = $this->CI->before_insert( $data );
+			$data = $this->CI->before_insert( TORCH_TABLE, $data );
 		}
 		
 		$data[ 'id' ] = $this->CI->table_torch_model->insert( $data );
 		
 		if( method_exists( $this->CI, 'after_insert' ) ){
-			$this->CI->after_insert( $data );
+			$this->CI->after_insert( TORCH_TABLE, $data );
 		}
 		
 		if( isset($_POST[ 'refer'])){
 			redirect( $_POST[ 'refer' ] );
 		}else{
-			redirect( CUR_CONTROLLER .'/'.CUR_METHOD.'/listing/'.TORCH_TABLE );
+			redirect( torch_url( array( 'table'=>TORCH_TABLE, 'action'=>'listing' ), FALSE ) );
 		}
 		
 	}
@@ -169,7 +174,7 @@ class Table_torch {
 			}
 		}
 		
-		redirect( $this->_concat_url() );
+		redirect( torch_url( $this->url_vals, FALSE ) );
 		
 	}
 	
@@ -185,7 +190,7 @@ class Table_torch {
 			$this->CI->after_delete( TORCH_TABLE, TORCH_KEY );
 		}
 		
-		redirect( CUR_CONTROLLER ."/".CUR_METHOD."/listing/" .TORCH_TABLE );
+		redirect( torch_url( array( 'table'=>TORCH_TABLE, 'action'=>'listing' ), FALSE ) );
 	}
 	
 	function update(){
@@ -208,7 +213,7 @@ class Table_torch {
 		if( isset($_POST[ 'refer'])){
 			redirect( $_POST[ 'refer' ] );
 		}else{
-			redirect( CUR_CONTROLLER .'/'.CUR_METHOD .'/listing/'.$_POST[ 'table' ] );
+			redirect( torch_url( array( 'table'=>TORCH_TABLE, 'action'=>'listing' ), FALSE ) );
 		}
 
 	}
@@ -233,20 +238,6 @@ class Table_torch {
 		}
 		
 		$this->CI->load->view( $this->CI->config->item( 'template_file' ), $data );
-	}
-
-	// private functions
-
-	protected function _concat_url(){
-		
-		$url = site_url(  CUR_CONTROLLER . "/" . CUR_METHOD . "/listing/" . TORCH_TABLE );
-		
-		foreach ($this->url_vals as $key => $value) {
-			if( $value != '' ){
-				$url .= "/$key".$this->dilem."$value";
-			}
-		}
-		return $url;
 	}
 
 
@@ -283,12 +274,19 @@ class Table_torch {
 			$actions = '';
 
 			if( $prefs[ 'edit' ] ){
-				$actions .= anchor( CUR_CONTROLLER .'/'.CUR_METHOD .'/edit/'.TORCH_TABLE.'/'.$row[ PRIMARY_KEY ], 'Edit', array( 'class'=>'actionLink', 'id'=>'editLink') );
+				$actions .= anchor( torch_url(	array( 	'action'=>'edit',
+														'table'=>TORCH_TABLE,
+														'key'=>$row[ PRIMARY_KEY ] ), FALSE ),
+											 
+									'Edit', array( 'class'=>'actionLink', 'id'=>'editLink') );
 			}
 
 			if( $prefs[ 'delete' ] ){
 				$confirm = $this->CI->lang->line( 'table_torch_delete_confirm' );
-				$actions .= anchor( CUR_CONTROLLER .'/'.CUR_METHOD .'/delete/'.TORCH_TABLE.'/'.$row[ PRIMARY_KEY ], 'Delete', array( 'onclick'=>"return confirm('$confirm')", 'class'=>'actionLink' ) );
+				$actions .= anchor( torch_url( array( 	'action'=>'delete',
+														'table'=>TORCH_TABLE,
+														'key'=>$row[ PRIMARY_KEY ]), FALSE ), 
+									'Delete', array( 'onclick'=>"return confirm('$confirm')", 'class'=>'actionLink' ) );
 			}
 
 			$tmp[ 'actions' ] = $actions;
@@ -327,7 +325,7 @@ class Table_torch {
 			if( $humanize ){
 				$fieldname = humanize( $fieldname );
 			}
-			array_push( $headers, anchor( $this->_concat_url(), $prefix .$fieldname, array( 'class'=>$class ))); 
+			array_push( $headers, anchor( torch_url( $this->url_vals, FALSE ), $prefix . $fieldname, array( 'class'=>$class ))); 
 		}
 		
 		$this->url_vals = $org_vals;
@@ -335,10 +333,6 @@ class Table_torch {
 		return $rows;
 
 	}
-
-
-
-	
 	
 	protected function _field_options(){
 		
@@ -349,49 +343,20 @@ class Table_torch {
 		}
 		
 		return $options;
-		
 	}
 	
 	
 	protected function _disect_url(){
 		
 		$segs = $this->CI->uri->segment_array();
-		
 
 		foreach( $segs as $segment){
 			
-			if( strpos( $segment, 'search_field' ) !== FALSE ){
-				$arr = explode( $this->dilem, $segment );
-				if( isset($arr[ 1 ])){
-					$this->url_vals['search_field'] = $arr[ 1 ];
-				}
+			if( strpos( $segment, PARAM_DILEM ) !== FALSE ){
+				$arr = explode( PARAM_DILEM, $segment );
+				$this->url_vals[ $arr[ 0 ] ] = $arr[ 1 ];
 			}
-			
-			if( strpos( $segment, 'keyword' ) !== FALSE ){
-				$arr = explode( $this->dilem, $segment );
-				if( isset($arr[ 1 ])){
-					$this->url_vals['keyword'] = $arr[ 1 ];
-				}
-			}
-			
-			if( strpos( $segment, 'sort_field' ) !== FALSE ){
-				$arr = explode( $this->dilem, $segment );
-				if( isset($arr[ 1 ])){
-					$this->url_vals['sort_field'] = $arr[ 1 ];
-				}
-			}
-			
-			if( strpos( $segment, 'sort_dir' ) !== FALSE ){
-				$arr = explode( $this->dilem, $segment );
-				if( isset($arr[ 1 ])){
-					$this->url_vals['sort_dir'] = $arr[ 1 ];
-				}
-			}
-		
 		}
-		
-
-		
 	}
 
 	

@@ -19,7 +19,38 @@ function table_torch_title( $table ){
 	}
 }
 
-
+function torch_url( $params, $prepend_base=TRUE ){
+	
+	$CI = &get_instance();
+	$segs = $CI->uri->segment_array();
+	
+	
+	$base = '';
+	$torch_url = '';
+	foreach ($segs as $seg) {
+		if( strpos( $seg, PARAM_DILEM ) === FALSE ){
+			$base .= $seg.'/';
+		}else{
+			break;
+		}
+	}
+	
+	foreach ($params as $key => $value) {
+		if( !empty( $value )){
+			$torch_url .= $key.PARAM_DILEM.$value.'/';
+		}
+	}
+	
+	
+	if( $prepend_base ){
+		$url = site_url( $base . $torch_url);
+	}else{
+		$url =	$base . $torch_url;
+	}
+	
+	return $url;
+	
+} 
 
 function table_torch_nav(){
 	
@@ -32,7 +63,7 @@ function table_torch_nav(){
 	if( isset( $_SERVER['HTTP_REFERER'] )){
 		$refer = $_SERVER['HTTP_REFERER'];
 	}else{
-		$refer = CUR_CONTROLLER;
+		$refer = torch_url( array() );
 	}
 	
 	$str = "<ul id=\"navHeader\">\n";
@@ -41,7 +72,7 @@ function table_torch_nav(){
 	if( TORCH_METHOD == 'edit' or  TORCH_METHOD == 'add' ){
 		$str .= "<li class=\"backLink\"><a href=\"$refer\">" . $CI->lang->line( 'table_torch_back_to_listing' ) ."</a></li>\n";
 	}else if( TORCH_METHOD == 'listing' and $prefs[ 'add' ] == TRUE ){
-		$str .= "<li class=\"backLink\">\n" . anchor( CUR_CONTROLLER . '/'.CUR_METHOD ."/add/".TORCH_TABLE, $CI->lang->line( 'table_torch_add_new_link' )) ."</li>\n";
+		$str .= "<li class=\"backLink\">\n" . anchor( torch_url( array( 'table'=>TORCH_TABLE, 'action'=>'add' ), FALSE ), $CI->lang->line( 'table_torch_add_new_link' )) ."</li>\n";
 	}
 	
 	foreach ( $tables as $key => $table ){
@@ -51,7 +82,7 @@ function table_torch_nav(){
 			$class = '';
 		}
 		$label = ucwords( plural( table_torch_title( $key ) ));
-		$url = site_url( CUR_CONTROLLER . '/'.CUR_METHOD .'/listing/' . $key );
+		$url = torch_url( array( 'table'=>$key, 'action'=>'listing' ) );
 		$str .= "<li><a href=\"$url\" class=\"$class\">$label</a></li>\n";
 	}
 	

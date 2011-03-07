@@ -33,15 +33,12 @@ class Table_torch {
 
 		$this->CI->table->set_template( $this->CI->config->item( 'table_formatting') );
 
-
 	}
 	
 	function route(){
 
 		$this->_disect_url();
 		$redirect = FALSE;
-
-	//	trace($this->url_vals, true );
 
 		if( empty( $this->url_vals[ 'table' ] )){
 

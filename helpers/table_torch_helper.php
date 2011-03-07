@@ -35,6 +35,10 @@ function torch_url( $params, $prepend_base=TRUE ){
 		}
 	}
 	
+	if( empty($base) ){
+		$base = $CI->router->fetch_class() . '/' . $CI->router->fetch_method() .'/';
+	}
+	
 	foreach ($params as $key => $value) {
 		if( !empty( $value )){
 			$torch_url .= $key.PARAM_DILEM.$value.'/';

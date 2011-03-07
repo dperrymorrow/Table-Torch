@@ -29,6 +29,10 @@ $config[ 'humanize_fields' ] = TRUE;
 /*
 add extra links here to appear in the nav, they will appear after the tables
 */
+
+// function to run on table cell contents, in this case htmlspecialchars, set to '' to run nothing
+$config[ 'table_torch_function' ] = 'htmlspecialchars';
+
 $config[ 'table_extra_nav_links' ] = array( 
 												//'welcome/index'=>'Welcome',
 												//'user/logout'=>'Log Out'

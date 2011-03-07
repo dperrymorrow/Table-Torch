@@ -49,7 +49,6 @@ class Table_torch {
 			$redirect = TRUE;
 		}
 		
-
 		define( 'TORCH_METHOD', $this->url_vals[ 'action' ] );
 		define( 'TORCH_TABLE', $this->url_vals[ 'table' ] );
 		define( 'TORCH_KEY', $this->url_vals[ 'key' ] );
@@ -263,6 +262,7 @@ class Table_torch {
 		
 		$paginate_prefs = $this->CI->config->item( 'pagination_settings' );
 		$limit = $paginate_prefs[ 'per_page' ];
+		$funct = $this->CI->config->item( 'table_torch_function' );
 		
 		$rows = $this->CI->table_torch_model->get_listing( $this->url_vals, $limit, $offset );
 
@@ -287,7 +287,16 @@ class Table_torch {
 			}
 
 			$tmp[ 'actions' ] = $actions;
-			foreach ($rows[ $i ] as $key => $value ){ $tmp[ $key ] = $value; }
+			foreach ($rows[ $i ] as $key => $value ){ 
+				
+				
+				if( !empty( $funct )){
+					$value = $funct( $value );
+				}
+				
+				$tmp[ $key ] = $value; 
+				
+			}
 			$rows[ $i ] = $tmp;
 		}
 

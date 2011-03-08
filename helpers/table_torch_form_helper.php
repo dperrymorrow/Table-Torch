@@ -102,7 +102,7 @@ function table_torch_field( $item_desc, $row=NULL, $disabled=NULL ){
 
 		$str .= "<input type=\"checkbox\" name=\"$field\" value=\"1\" $checked $disabled/>\n";
 
-		}else if( $item_desc[ 'Type' ] == 'text' ){
+		}else if( $item_desc[ 'Type' ] == 'text' or $item_desc[ 'Type' ] == 'longtext' ){
 			$str .= "<textarea name=\"$field\" $disabled>".form_prep( $value )."</textarea>\n";
 		}else{
 			$str .= "<input type=\"text\" name=\"$field\" value=\"".form_prep( $value )."\" $disabled />\n";

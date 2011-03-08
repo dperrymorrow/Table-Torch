@@ -1,6 +1,6 @@
 <?php
 
-$config[ 'table_torch_version' ] = 	'1.0.6';
+$config[ 'table_torch_version' ] = 	'1.0.7';
 /*
 normally the template file is sparks/table-torch/[version]/views/template.php
 if you would like to specify something different, please do so here but dont include the views dir, just folder/file 

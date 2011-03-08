@@ -16,7 +16,7 @@ function table_torch_form( $desc, $row=null ){
 
 	$CI = &get_instance();
 	$list = array();
-	$prefs = $CI->config->item( 'torch_tables' );
+	$prefs = $CI->config->item( 'table_torch_tables' );
 	if( isset( $prefs[ TORCH_TABLE ][ 'disabled' ] )){
 		$list = explode( ',', $prefs[ TORCH_TABLE ][ 'disabled' ] );
 	}
@@ -62,7 +62,7 @@ function table_torch_form_close(){
 function table_torch_field( $item_desc, $row=NULL, $disabled=NULL ){
 
 	$CI = &get_instance();
-	$humanize = $CI->config->item( 'humanize_fields' );
+	$humanize = $CI->config->item( 'table_torch_humanize_fields' );
 	
 	if( $disabled == TRUE ){
 		$disabled = 'disabled';
@@ -102,7 +102,7 @@ function table_torch_field( $item_desc, $row=NULL, $disabled=NULL ){
 
 		$str .= "<input type=\"checkbox\" name=\"$field\" value=\"1\" $checked $disabled/>\n";
 
-		}else if( $item_desc[ 'Type' ] == 'text' or $item_desc[ 'Type' ] == 'longtext' ){
+		}else if( $item_desc[ 'Type' ] == 'text' or $item_desc[ 'Type' ] == 'longtext' or $item_desc[ 'Type' ] == 'blob' ){
 			$str .= "<textarea name=\"$field\" $disabled>".form_prep( $value )."</textarea>\n";
 		}else{
 			$str .= "<input type=\"text\" name=\"$field\" value=\"".form_prep( $value )."\" $disabled />\n";

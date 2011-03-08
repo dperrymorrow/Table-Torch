@@ -1,31 +1,31 @@
 <?php
 
-
+$config[ 'table_torch_version' ] = 	'1.0.6';
 /*
 normally the template file is sparks/table-torch/[version]/views/template.php
 if you would like to specify something different, please do so here but dont include the views dir, just folder/file 
 if you file is in application/views/admin/template.php
 you would specify admin/template
 */
-$config[ 'template_file'] 				= 'template.php';
+$config[ 'table_torch_template_file'] 				= 'template.php';
 /*
 is the template you specified above in application/third_party/table_torch/views dir?
 this boolean simply tells Table Torch where to look for the template file
 */
-$config[ 'template_in_torch_dir' ] 	= TRUE;
+$config[ 'table_torch_template_in_torch_dir' ] 	= TRUE;
 /*
 pagination settings, see 
 http://codeigniter.com/user_guide/libraries/pagination.html
 for more details
 */
-$config[ 'pagination_settings'] = array( 	'per_page'=>20,
+$config[ 'table_torch_pagination_settings'] = array( 	'per_page'=>20,
 											'full_tag_open' => '<div class="paginationWrapper">',
 											'full_tag_close' => '</div>' 
 										);
 /*
 if true this will run inflector's humanize on fields when displayed
 */
-$config[ 'humanize_fields' ] = TRUE;
+$config[ 'table_torch_humanize_fields' ] = TRUE;
 /*
 add extra links here to appear in the nav, they will appear after the tables
 */
@@ -33,7 +33,7 @@ add extra links here to appear in the nav, they will appear after the tables
 // function to run on table cell contents, in this case htmlspecialchars, set to '' to run nothing
 $config[ 'table_torch_function' ] = 'htmlspecialchars';
 
-$config[ 'table_extra_nav_links' ] = array( 
+$config[ 'table_torch_extra_nav_links' ] = array( 
 												//'welcome/index'=>'Welcome',
 												//'user/logout'=>'Log Out'
  											);
@@ -41,7 +41,7 @@ $config[ 'table_extra_nav_links' ] = array(
 preferences for the table display on the listing pages,
 see http://codeigniter.com/user_guide/libraries/table.html for more details
 */
-$config[ 'table_formatting'] = array(
+$config[ 'table_torch_table_formatting'] = array(
                     						'table_open' => '<table border="0" width="100" %cellpadding="4" cellspacing="0">',
                     						'heading_row_start'   => '<tr>',
                     						'heading_row_end'     => '</tr>',
@@ -65,7 +65,7 @@ these are the tables that will be "Torched"
 you can specify if the rows can be edited, deleted, and added.
 also you can disabled certain fields, disabled fields will show up as disabled on the edit / add forms
 */		
-$config['torch_tables'] = array( 
+$config['table_torch_tables'] = array( 
 									'accounts'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>TRUE ),
 									'users'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>FALSE, 'disabled'=>'created_at,last_logged,salt,crypted_password'  ),
 									'templates'=>array( 'edit'=>TRUE, 'delete'=>TRUE, 'add'=>TRUE ),

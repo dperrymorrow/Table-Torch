@@ -9,7 +9,7 @@ class Table_torch {
 	public $settings = array();
 	public $load_prefix = '';
 	public $CI;
-	public $version = '1.0.5/';
+
 	
 	public $url_vals = array( 	'search_field'=>'', 
 								'keyword'=>'', 
@@ -26,12 +26,12 @@ class Table_torch {
 		define( 'PARAM_DILEM', $this->dilem );
 		
 		$this->CI->load->library( array( 'table', 'pagination', 'security' ));
-		$this->load_prefix = 'sparks/table_torch/'.$this->version;
+		$this->load_prefix = 'sparks/table_torch/'.$this->CI->config->item( 'table_torch_version' ) .'/';
 
 		$this->org_path = $this->CI->load->_ci_view_path;
 		$this->CI->load->database();
 
-		$this->CI->table->set_template( $this->CI->config->item( 'table_formatting') );
+		$this->CI->table->set_template( $this->CI->config->item( 'table_torch_table_formatting') );
 
 	}
 	
@@ -42,7 +42,7 @@ class Table_torch {
 
 		if( empty( $this->url_vals[ 'table' ] )){
 
-			$tables = $this->CI->config->item( 'torch_tables' );
+			$tables = $this->CI->config->item( 'table_torch_tables' );
 			$this->url_vals[ 'table' ] = key( $tables );
 
 			$this->url_vals[ 'action' ] = 'listing';
@@ -69,7 +69,7 @@ class Table_torch {
 
 	function listing(){
 
-		$config = $this->CI->config->item( 'pagination_settings' );
+		$config = $this->CI->config->item( 'table_torch_pagination_settings' );
 		$config['base_url'] = torch_url( $this->url_vals );
 		$config['total_rows'] = $this->CI->table_torch_model->get_count( $this->url_vals ); 
 		$config['uri_segment' ] = $this->CI->uri->total_segments();
@@ -80,7 +80,7 @@ class Table_torch {
 		$data[ 'table' ] = TORCH_TABLE;
 		$data[ 'total_count' ] = $config[ 'total_rows' ];
 		$data[ 'rows' ] = $this->_table_data( $this->CI->uri->segment( $config[ 'uri_segment'] ) );
-		$data[ 'tables' ] = $this->CI->config->item( 'torch_tables' );
+		$data[ 'tables' ] = $this->CI->config->item( 'table_torch_torch_tables' );
 		$data[ 'url_params' ] = $this->url_vals;
 		$data[ 'options' ] = $this->_field_options();
 		
@@ -104,7 +104,7 @@ class Table_torch {
 	function add(){
 		
 		
-		$data[ 'tables' ] = $this->CI->config->item( 'torch_tables' );
+		$data[ 'tables' ] = $this->CI->config->item( 'table_torch_tables' );
 		$data[ 'table' ] = TORCH_TABLE;
 		$data[ 'desc' ] = $this->CI->table_torch_model->describe_table();
 		$data[ 'row' ] = NULL;
@@ -125,7 +125,7 @@ class Table_torch {
 		$data[ 'desc' ] = $this->CI->table_torch_model->describe_table();
 		$data[ 'table' ] = TORCH_TABLE;
 		$data[ 'row' ] = $this->CI->table_torch_model->get_by_key();
-		$data[ 'tables' ] = $this->CI->config->item( 'torch_tables' );
+		$data[ 'tables' ] = $this->CI->config->item( 'table_torch_tables' );
 		
 		if( method_exists( $this->CI, TORCH_TABLE."_edit" )){
 			$method = TORCH_TABLE."_edit";
@@ -225,7 +225,7 @@ class Table_torch {
 		}
 		
 		$data[ 'contents' ] = $this->CI->load->view( $view_file, $data, TRUE );
-		$in_dir = $this->CI->config->item( 'template_in_torch_dir' );
+		$in_dir = $this->CI->config->item( 'table_torch_template_in_torch_dir' );
 		
 		if( $in_dir ){
 			$this->CI->load->_ci_view_path = $this->load_prefix .'views/';
@@ -233,7 +233,7 @@ class Table_torch {
 			$this->CI->load->_ci_view_path = $this->org_path;
 		}
 		
-		$this->CI->load->view( $this->CI->config->item( 'template_file' ), $data );
+		$this->CI->load->view( $this->CI->config->item( 'table_torch_template_file' ), $data );
 	}
 
 
@@ -244,7 +244,7 @@ class Table_torch {
 			show_error( $this->CI->lang->line( 'table_torch_table_not_specified' ) );
 		}
 
-		$tables = $this->CI->config->item( 'torch_tables' );
+		$tables = $this->CI->config->item( 'table_torch_tables' );
 
 		if( !isset($tables[ TORCH_TABLE ])){
 			show_error( $this->CI->lang->line( 'table_torch_table_not_in_config' ) );
@@ -256,11 +256,11 @@ class Table_torch {
 	protected function _table_data( $offset=0 ){
 
 
-		$tables = $this->CI->config->item( 'torch_tables' );
+		$tables = $this->CI->config->item( 'table_torch_tables' );
 		$prefs = $tables[ TORCH_TABLE ];
-		$humanize = $this->CI->config->item( 'humanize_fields' );
+		$humanize = $this->CI->config->item( 'table_torch_humanize_fields' );
 		
-		$paginate_prefs = $this->CI->config->item( 'pagination_settings' );
+		$paginate_prefs = $this->CI->config->item( 'table_torch_pagination_settings' );
 		$limit = $paginate_prefs[ 'per_page' ];
 		$funct = $this->CI->config->item( 'table_torch_function' );
 		

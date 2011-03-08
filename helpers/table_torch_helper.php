@@ -60,10 +60,10 @@ function table_torch_nav(){
 	
 	
 	$CI = &get_instance();
-	$tables = $CI->config->item( 'torch_tables' );
+	$tables = $CI->config->item( 'table_torch_tables' );
 	$prefs = $tables[ TORCH_TABLE ];
 	
-	$extra_links = $CI->config->item( 'table_extra_nav_links' );
+	$extra_links = $CI->config->item( 'table_torch_extra_nav_links' );
 	if( isset( $_SERVER['HTTP_REFERER'] )){
 		$refer = $_SERVER['HTTP_REFERER'];
 	}else{

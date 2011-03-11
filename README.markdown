@@ -14,6 +14,10 @@ Table Torch is a custom scaffolding system that can be used for common administr
 -  CRUD callbacks available to your controller
 -  Version 1.0.3 on supports nested directories, your URI can now be however you need, Table Torch uses its own key::value params 
 
+![Table Torch](http://dl.dropbox.com/u/9683877/spark_imgs/table_torch.png "Table Torch Example")
+
+
+
 ## Setup Your Config Preferences
 
 In sparks/table-torch/config/table_torch.php you will find the preferences for running your scaffold. The config file is well commented.
@@ -97,4 +101,7 @@ You can preform additional functions before or after the Table Torch form submis
 	function after_update( $table, $data ){
 		/* do what you need to after updating a row */
 	}
+
+- [Log Issues or Suggestions](https://github.com/dperrymorrow/Table-Torch/issues)
+- [Follow me on Twitter](http://twitter.com/dperrymorrow)
 

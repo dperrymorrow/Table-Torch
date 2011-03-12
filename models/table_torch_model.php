@@ -3,7 +3,8 @@
 if (! defined('BASEPATH')) exit('No direct script access');
 
 class Table_torch_model extends CI_Model {
-
+	
+	public $description = array();
 
 	//php 5 constructor
 	function __construct() {
@@ -62,10 +63,16 @@ class Table_torch_model extends CI_Model {
 	
 	
 	public function describe_table(){
+		
 		$table = TORCH_TABLE;
-		$sql = "DESCRIBE `$table`";
-		$desc = $this->db->query($sql)->result_array();
-		return $desc;
+		
+		if( empty( $this->description ) ){
+			$sql = "DESCRIBE `$table`";
+			$desc = $this->db->query( $sql )->result_array();
+			$this->description = $desc;
+		}
+		
+		return $this->description;
 	}
 	
 	public function update( $data ){

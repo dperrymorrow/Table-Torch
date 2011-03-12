@@ -57,8 +57,6 @@ class Table_torch {
 		$this->CI->table_torch_model->define_primary_key();
 
 		if( $redirect ){
-		//	trace( torch_url( $this->url_vals, FALSE ), true );
-			
 			redirect( torch_url( $this->url_vals, FALSE ));
 		}else{
 			$method = TORCH_METHOD;

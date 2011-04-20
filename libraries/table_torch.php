@@ -23,6 +23,7 @@ class Table_torch {
 	function __construct() {
 		
 		$this->CI = &get_instance();
+		$this->CI->load->config( 'table_torch' );
 		define( 'PARAM_DILEM', $this->dilem );
 		
 		$this->CI->load->library( array( 'table', 'pagination', 'security' ));

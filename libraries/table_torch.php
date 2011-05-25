@@ -27,7 +27,9 @@ class Table_torch {
 		define( 'PARAM_DILEM', $this->dilem );
 		
 		$this->CI->load->library( array( 'table', 'pagination', 'security' ));
-		$this->load_prefix = 'sparks/table_torch/'.$this->CI->config->item( 'table_torch_version' ) .'/';
+		$this->load_prefix = dirname(__DIR__).DIRECTORY_SEPARATOR;
+		//'sparks/table_torch/'.$this->CI->config->item( 'table_torch_version' ) .'/';
+
 
 		$this->org_path = $this->CI->load->_ci_view_path;
 		$this->CI->load->database();

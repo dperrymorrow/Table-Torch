@@ -1,6 +1,6 @@
 # Table Torch Scaffolding Spark
 
-# if you are using CI 2.0.2 you need to read this article before using my, or any other sparks for that matter. 2.0.2 has a bug with the loader class that breaks the sparks MY_Loader extension thereof. [http://codefury.net/2011/05/getsparks-org-beta-released-big-changes/](http://codefury.net/2011/05/getsparks-org-beta-released-big-changes/)
+## _if you are using CI 2.0.2 you need to read this article before using my, or any other sparks for that matter. 2.0.2 has a bug with the loader class that breaks the sparks MY_Loader extension thereof. [http://codefury.net/2011/05/getsparks-org-beta-released-big-changes/](http://codefury.net/2011/05/getsparks-org-beta-released-big-changes/)_
 
 ## !version 1.0.3 onward uses key::value params to avoid requiring params at certain positions of the URI. Why? So you use Table Torch in sub directories. */admin/pages/torch_it_up* will now work as expected. 
 

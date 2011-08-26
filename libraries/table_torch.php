@@ -291,7 +291,10 @@ class Table_torch {
 			foreach ($rows[ $i ] as $key => $value ){ 
 				
 				
-				if( !empty( $funct )){
+				if( !empty( $prefs[ 'formats' ][ $key ])) {
+					$value = $prefs[ 'formats' ][ $key ]( $value, $key, TORCH_TABLE );
+
+				} elseif( !empty( $funct )){
 					$value = $funct( $value );
 				}
 				

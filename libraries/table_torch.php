@@ -5,10 +5,9 @@ if (! defined('BASEPATH')) exit('No direct script access');
 class Table_torch {
 	
 	public $dilem = "::";
-	public $org_path = '';
 	public $settings = array();
-	public $load_prefix = '';
 	public $CI;
+	public $load_prefix = "";
 
 	
 	public $url_vals = array( 	'search_field'=>'', 
@@ -25,15 +24,9 @@ class Table_torch {
 		$this->CI = &get_instance();
 		$this->CI->load->config( 'table_torch' );
 		define( 'PARAM_DILEM', $this->dilem );
-		
+		$this->load_prefix = dirname(__FILE__).DIRECTORY_SEPARATOR;
 		$this->CI->load->library( array( 'table', 'pagination', 'security' ));
-		$this->load_prefix = dirname(__DIR__).DIRECTORY_SEPARATOR;
-		//'sparks/table_torch/'.$this->CI->config->item( 'table_torch_version' ) .'/';
-
-
-		$this->org_path = $this->CI->load->_ci_view_path;
 		$this->CI->load->database();
-
 		$this->CI->table->set_template( $this->CI->config->item( 'table_torch_table_formatting') );
 
 	}
@@ -219,22 +212,14 @@ class Table_torch {
 		
 
 		
-		if( $torch_view_dir ){
-			$this->CI->load->_ci_view_path = $this->load_prefix .'views/';
-		}else{
-			$this->CI->load->_ci_view_path = $this->org_path;
+		if( $torch_view_dir or $this->CI->config->item( 'table_torch_template_in_torch_dir' ) ){
+			$this->CI->load->add_package_path($this->load_prefix .'views/');
 		}
 		
 		$data[ 'contents' ] = $this->CI->load->view( $view_file, $data, TRUE );
-		$in_dir = $this->CI->config->item( 'table_torch_template_in_torch_dir' );
-		
-		if( $in_dir ){
-			$this->CI->load->_ci_view_path = $this->load_prefix .'views/';
-		}else{
-			$this->CI->load->_ci_view_path = $this->org_path;
-		}
-		
 		$this->CI->load->view( $this->CI->config->item( 'table_torch_template_file' ), $data );
+		
+		$this->CI->load->remove_package_path($this->load_prefix .'views/');
 	}
 
 
